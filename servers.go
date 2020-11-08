@@ -385,18 +385,18 @@ func (c *ApplicationCredentials) GetServers() (svs []*ApplicationServer, err err
 }
 
 // CreateServer creates a new server
-func (c *ApplicationCredentials) CreateServer(sv *ApplicationServer) (err error) {
+func (c *ApplicationCredentials) CreateServer(sv *ApplicationServer) (resp []byte, err error) {
 	bytes, err := json.Marshal(sv.asJSONServerCreation())
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	_, err = c.query("servers", "POST", bytes)
+	response, err := c.query("servers", "POST", bytes)
 	if err != nil {
-		return
+		return nil, err
 	}
 
-	return nil
+	return response, nil
 }
 
 // UpdateDetails modifies the server name, user, external id and description
